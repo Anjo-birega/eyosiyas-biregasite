@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Account</title>
+</head>
+<body>
+  <h1>Create Account</h1>
+  <form id="registerForm">
+    <input type="text" id="username" placeholder="Username" required /><br><br>
+    <input type="file" id="profilePhoto" accept="image/*" required /><br><br>
+    <button type="submit">Create Account</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const fileInput = document.getElementById('profilePhoto');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert('Please select a profile photo');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        const photoDataUrl = reader.result;
+        // Save username and photo base64 in localStorage
+        localStorage.setItem('username', username);
+        localStorage.setItem('profilePhoto', photoDataUrl);
+        alert('Account created! Now you can log in.');
+        window.location.href = 'login.html';
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>

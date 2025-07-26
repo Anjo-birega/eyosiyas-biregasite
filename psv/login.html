@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #00008B;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-container {
+      background: #222;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #00ff00;
+      width: 320px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-family: 'Orbitron', sans-serif;
+      color: #00ff00;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+      text-transform: none; /* important: do not auto-change case */
+    }
+    button {
+      width: 100%;
+      background-color: #00ff00;
+      border: none;
+      padding: 12px;
+      color: #000;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #00cc00;
+    }
+    .message {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #00ff00;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <input type="text" id="loginUsername" placeholder="Enter username" required autocomplete="off" />
+      <button type="submit">Log In</button>
+    </form>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const messageDiv = document.getElementById('message');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const enteredUsername = document.getElementById('loginUsername').value.trim();
+      const savedUsername = localStorage.getItem('username');
+
+      if (savedUsername && enteredUsername === savedUsername) {
+        messageDiv.style.color = '#00ff00';
+        messageDiv.textContent = `Welcome, ${enteredUsername}! You are logged in.`;
+        localStorage.setItem('loggedInUser', enteredUsername);
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 2000);
+      } else {
+        messageDiv.style.color = '#ff4d4d';
+        messageDiv.textContent = 'Invalid username. Please try again.';
+      }
+    });
+
+    // Autofill username only if it matches case exactly
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedUsername = localStorage.getItem('username');
+      if (savedUsername) {
+        document.getElementById('loginUsername').value = savedUsername;
+      }
+    });
+  </script>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+</head>
+<body>
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Enter username" />
+  <button onclick="login()">Login</button>
+
+  <script>
+    function login() {
+      const input = document.getElementById("username").value.trim();
+      if (input === "") {
+        localStorage.setItem("loggedInUser", input);
+        alert("Welcome " + input + "!");
+        window.location.href = "post.html"; // go to post page
+      } else {
+        alert("Invalid username.");
+      }
+    }
+  </script>
+</body>
+</html>
+
+</body>
+</html>

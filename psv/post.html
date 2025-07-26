@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Post</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 30px;
+      background-color: #f4f4f4;
+    }
+    textarea {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background: darkblue;
+      color: white;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Post Message</h2>
+  <p>User: <span id="usernameDisplay"></span></p>
+
+  <textarea id="message" rows="4" placeholder="Write your message..."></textarea><br>
+  <button onclick="savePost()">Post</button>
+
+  <script>
+    // Get username from localStorage
+    const username = localStorage.getItem("loggedInUser");
+    if (!username) {
+      alert("You are not logged in.");
+      window.location.href = "login.html"; // redirect to login page
+    } else {
+      document.getElementById("usernameDisplay").textContent = username;
+    }
+
+    function savePost() {
+      const message = document.getElementById("message").value.trim();
+      if (message === "") {
+        alert("Please write something before posting.");
+        return;
+      }
+
+      const post = {
+        user: username,
+        message: message,
+        time: new Date().toISOString()
+      };
+
+      let allPosts = JSON.parse(localStorage.getItem("posts")) || [];
+      allPosts.push(post);
+      localStorage.setItem("posts", JSON.stringify(allPosts));
+
+      document.getElementById("message").value = ""; // clear textbox
+      alert("Post saved!");
+    }
+  </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Post Message</title>
+</head>
+<body>
+  <h2>Write a Post</h2>
+  <textarea id="message" rows="4" cols="40" placeholder="Type your message..."></textarea><br />
+  <button onclick="postMessage()">Post</button>
+
+  <script>
+    const user = localStorage.getItem("loggedInUser");
+    if (!user) {
+      alert("Please log in first.");
+      window.location.href = "login.html";
+    }
+
+    function postMessage() {
+      const message = document.getElementById("message").value.trim();
+      if (message === "") return alert("Empty message!");
+
+      const post = { user, message, time: new Date().toLocaleString() };
+      const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+      posts.push(post);
+      localStorage.setItem("posts", JSON.stringify(posts));
+      document.getElementById("message").value = "";
+      alert("Posted!");
+      window.location.href = "home.html";
+    }
+  </script>
+</body>
+</html>
